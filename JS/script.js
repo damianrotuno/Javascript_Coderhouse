@@ -1,23 +1,32 @@
+/* ************************************************ VARIABLES ************************************************************************************* */
+
 let nombre;
 let total = 0;
 let parcial = 0;
 let unidad = 0;
+let listaDeCarrito = [];
 
+/* *********************************************************************************************************************************************** */
+
+/* ************************************************ OBJETOS ************************************************************************************** */
 
 class Producto{
-    constructor(elemento,precio){
+    constructor(elemento,precio,stock){
         this.elemento = elemento;
         this.precio = precio;
+        this.stock = stock;
     }
 }
 
-let arg86 = new Producto("Camiseta Argentina 1986",120000);
-let arg22 = new Producto("Camiseta Argentina 2022",75000);
-let shortArg86 = new Producto("Short Argentina 1986",35000);
-let pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000);
-let pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000);
+let arg86 = new Producto("Camiseta Argentina 1986",120000,7);
+let arg22 = new Producto("Camiseta Argentina 2022",75000,15);
+let shortArg86 = new Producto("Short Argentina 1986",35000,3);
+let pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000,2);
+let pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20);
 
-let listaDeCarrito = [];
+/* *********************************************************************************************************************************************** */ 
+
+/* ************************************************ FUNCIONES ************************************************************************************ */
 
 function bienvenidaUsuario(){
     nombre = prompt("Ingrese su nombre: ");
@@ -39,13 +48,11 @@ function agregarProducto(lista,producto){
         alert("Por favor, ingrese su nombre para poder agregar el producto al carrito");
     }
     else{
-        cantidadDeProducto();
+        verificarStock(producto);
         parcial = producto.precio * unidad;
         totalGeneral();
-    
-        for(let i=0;i<unidad;i++){
-            lista.push(producto); 
-        }
+        
+        lista.push("\n Producto: " + producto.elemento + " | Unidades: " + unidad + " | Precio: " + parcial);
 
         alert("Se agrego el producto al carrito");
     }
@@ -72,19 +79,10 @@ function verLista(lista){
     else{
         alert("EL CARRITO NO POSEE PRODUCTOS");
     }
-    
-    
-
 }
 
 function verDetalleProductos(lista){  
-    carrito = [];
-
-    lista.forEach(element => {
-        carrito.push(("\n Producto: " + element.elemento + " | Precio: " + element.precio));
-    });
-
-    alert(carrito);
+    alert(lista);
 }
 
 function limpiarLista(lista){
@@ -94,11 +92,31 @@ function limpiarLista(lista){
     total = 0;
 }
 
-function cantidadDeProducto(){ 
+function verificarDatos(){ 
+
     let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
-    unidad = parseInt(cantidad);
+    
+    while(isNaN(cantidad) || cantidad < 1){
+        alert("ERROR. POR FAVOR, INGRESE UN NÚMERO VÁLIDO");
+        cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");    
+    }
+    
+    unidad = parseInt(cantidad); 
+
+        
+}
+
+function verificarStock(producto){
+
+    verificarDatos();
+    if(producto.stock < unidad){
+        alert("NO DISPONEMOS DE STOCK PARA AGREGAR LA CANTIDAD SOLICITADA. Por favor ingrese un número menor a " + producto.stock);
+        verificarDatos();
+    }
 }
 
 function totalGeneral(){
     total = total + parcial;
 }
+
+

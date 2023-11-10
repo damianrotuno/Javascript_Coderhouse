@@ -37,6 +37,9 @@ button{
     text-align: center;
     width: 30%;
     margin: 0 auto 20px;
+    margin-bottom: 10px;
+    padding: 20px;
+    border-top: 2px solid black;
 }
 
 .product img{
