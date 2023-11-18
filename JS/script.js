@@ -58,13 +58,10 @@ function agregarProducto(lista,producto){
     }
 }
 
+
 function verLista(lista){
 
-    if(nombre == null){
-        
-        alert("INGRESE SU NOMBRE PARA PODER ACCEDER AL CARRITO");
-    }
-    else if(nombre != null && lista.length>0){
+    if(nombre != null && lista.length>0){
         verDetalleProductos(lista);
         let respuesta = confirm("Desea realizar la compra? El total es: " + total);
         
@@ -102,8 +99,6 @@ function verificarDatos(){
     }
     
     unidad = parseInt(cantidad); 
-
-        
 }
 
 function verificarStock(producto){
@@ -118,5 +113,46 @@ function verificarStock(producto){
 function totalGeneral(){
     total = total + parcial;
 }
+
+/*function irAlBolso(lista){
+    window.location.href = 'bolso.html';
+    verProductosDelBolso(lista);
+}*/
+
+/*function verProductosDelBolso(lista){
+    if(nombre != null && lista.length>0){
+
+        let listaDelBolso = lista.forEach(producto => {
+            //bolsoElement.innerHTML += "<p>" + producto + "</p>";
+            
+        });
+
+        let bolso = document.getElementById("bolso");
+        let bolsoDeCompras = "Productos en el bolso: " + "\n" + listaDelBolso ;
+        bolsoDeCompras.textContent = bolso;
+
+        //verDetalleProductos(lista);
+        //let respuesta = confirm("Desea realizar la compra? El total es: " + total);
+    }
+    else{
+        let bolso = document.getElementById("bolso");
+        let bolsoDeCompras = "El bolso esta vacío" ;
+        bolsoDeCompras.textContent = bolso;
+       //alert("EL CARRITO NO POSEE PRODUCTOS");
+    }
+}
+
+function confirmarCompra(){
+    let respuesta = confirm("Desea realizar la compra? El total es: " + total);
+
+    if(respuesta == true){
+        alert("Gracias por su compra");
+        limpiarLista(lista);
+    }
+    else{
+        alert("No se realizo la compra");
+    }
+
+}*/
 
 
