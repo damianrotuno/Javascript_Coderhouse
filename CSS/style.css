@@ -2,6 +2,7 @@ body{
     margin: 0;
     padding: 0;
     background-color: grey;
+    
 }
 
 h1{
@@ -51,6 +52,7 @@ p{
     display: block;
     margin: auto;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .carrito img{

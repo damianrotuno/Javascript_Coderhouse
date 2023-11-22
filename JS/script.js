@@ -4,7 +4,7 @@ let nombre;
 let total = 0;
 let parcial = 0;
 let unidad = 0;
-let listaDeCarrito = [];
+let listaDeBolso = [];
 
 /* *********************************************************************************************************************************************** */
 
@@ -46,7 +46,7 @@ function verPrecio(producto){
 function agregarProducto(lista,producto){
 
     if(nombre == null){
-        alert("Por favor, ingrese su nombre para poder agregar el producto al carrito");
+        alert("Por favor, ingrese su nombre para poder agregar el producto al BOLSO");
     }
     else{
         verificarStock(producto);
@@ -56,7 +56,7 @@ function agregarProducto(lista,producto){
         
         lista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
 
-        alert("Se agrego el producto al carrito");
+        alert("Se agrego el producto al bolso");
     }
 }
 
@@ -71,7 +71,7 @@ function quitarProducto(lista){
         verificarProducto(producto,unidad,lista);
     }
     else{
-        alert("EL CARRITO NO POSEE PRODUCTOS");
+        alert("EL BOLSO NO POSEE PRODUCTOS");
     }
 }
 
@@ -81,7 +81,7 @@ function verLista(lista){
         verDetalleLista(lista);
     }
     else{
-        alert("EL CARRITO NO POSEE PRODUCTOS");
+        alert("EL BOLSO NO POSEE PRODUCTOS");
     }
 }
 
@@ -131,7 +131,7 @@ function finalizarCompra(lista){
         mostrarMensajeCompra(respuesta);
     }
     else{
-        alert("EL CARRITO NO POSEE PRODUCTOS");
+        alert("EL BOLSO NO POSEE PRODUCTOS");
     }
 }
 
