@@ -11,18 +11,19 @@ let listaDeCarrito = [];
 /* ************************************************ OBJETOS ************************************************************************************** */
 
 class Producto{
-    constructor(elemento,precio,stock){
+    constructor(elemento,precio,stock,unidadAVender){
         this.elemento = elemento;
         this.precio = precio;
         this.stock = stock;
+        this.unidadAVender;
     }
 }
 
-let arg86 = new Producto("Camiseta Argentina 1986",120000,7);
-let arg22 = new Producto("Camiseta Argentina 2022",75000,15);
-let shortArg86 = new Producto("Short Argentina 1986",35000,3);
-let pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000,2);
-let pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20);
+let arg86 = new Producto("Camiseta Argentina 1986",120000,7,0);
+let arg22 = new Producto("Camiseta Argentina 2022",75000,15,0);
+let shortArg86 = new Producto("Short Argentina 1986",35000,3,0);
+let pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000,2,0);
+let pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20,0);
 
 /* *********************************************************************************************************************************************** */ 
 
@@ -49,36 +50,42 @@ function agregarProducto(lista,producto){
     }
     else{
         verificarStock(producto);
-        parcial = producto.precio * unidad;
+        restarStock(producto);
+        parcial = producto.precio * producto.unidadAVender;
         totalGeneral();
         
-        lista.push("\n Producto: " + producto.elemento + " | Unidades: " + unidad + " | Precio: " + parcial);
+        lista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
 
         alert("Se agrego el producto al carrito");
     }
 }
 
-
-function verLista(lista){
+function quitarProducto(lista){
 
     if(nombre != null && lista.length>0){
-        verDetalleProductos(lista);
-        let respuesta = confirm("Desea realizar la compra? El total es: " + total);
-        
-        if(respuesta == true){
-            alert("Gracias por su compra");
-            limpiarLista(lista);
-        }
-        else{
-            alert("No se realizo la compra");
-        }
+        verDetalleLista(lista);
+        let producto = prompt("Seleccione el producto que desea quitar del bolso: " +  "\n Codigos" + "\n Camiseta Argentina 86 = arg86" 
+        + "\n Camiseta Argentina 22 = arg22" + "\n Short Argentina 86 = shortArg86" + "\n Pelota Adidas Fevernova 02 = pelota02" + "\n Pelota Al Rhila 22 = pelota22"
+        );
+        let unidad = prompt("Seleccione la cantidad que desea quitar: ");
+        verificarProducto(producto,unidad,lista);
     }
     else{
         alert("EL CARRITO NO POSEE PRODUCTOS");
     }
 }
 
-function verDetalleProductos(lista){  
+function verLista(lista){
+
+    if(nombre != null && lista.length>0){
+        verDetalleLista(lista);
+    }
+    else{
+        alert("EL CARRITO NO POSEE PRODUCTOS");
+    }
+}
+
+function verDetalleLista(lista){  
     alert(lista);
 }
 
@@ -98,7 +105,7 @@ function verificarDatos(){
         cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");    
     }
     
-    unidad = parseInt(cantidad); 
+    unidad = parseInt(cantidad);
 }
 
 function verificarStock(producto){
@@ -108,51 +115,54 @@ function verificarStock(producto){
         alert("NO DISPONEMOS DE STOCK PARA AGREGAR LA CANTIDAD SOLICITADA. Por favor ingrese un número menor a " + producto.stock);
         verificarDatos();
     }
+
+    producto.unidadAVender = unidad;
 }
 
 function totalGeneral(){
     total = total + parcial;
 }
 
-/*function irAlBolso(lista){
-    window.location.href = 'bolso.html';
-    verProductosDelBolso(lista);
-}*/
-
-/*function verProductosDelBolso(lista){
+function finalizarCompra(lista){
     if(nombre != null && lista.length>0){
-
-        let listaDelBolso = lista.forEach(producto => {
-            //bolsoElement.innerHTML += "<p>" + producto + "</p>";
-            
-        });
-
-        let bolso = document.getElementById("bolso");
-        let bolsoDeCompras = "Productos en el bolso: " + "\n" + listaDelBolso ;
-        bolsoDeCompras.textContent = bolso;
-
-        //verDetalleProductos(lista);
-        //let respuesta = confirm("Desea realizar la compra? El total es: " + total);
+        verDetalleLista(lista);
+        let respuesta = confirm("Desea realizar la compra? El total es: " + total);
+        limpiarLista(lista);
+        mostrarMensajeCompra(respuesta);
     }
     else{
-        let bolso = document.getElementById("bolso");
-        let bolsoDeCompras = "El bolso esta vacío" ;
-        bolsoDeCompras.textContent = bolso;
-       //alert("EL CARRITO NO POSEE PRODUCTOS");
+        alert("EL CARRITO NO POSEE PRODUCTOS");
     }
 }
 
-function confirmarCompra(){
-    let respuesta = confirm("Desea realizar la compra? El total es: " + total);
-
-    if(respuesta == true){
+function mostrarMensajeCompra(rta){
+    if(rta == true){
         alert("Gracias por su compra");
-        limpiarLista(lista);
     }
     else{
         alert("No se realizo la compra");
     }
+}
 
-}*/
+function sumarStock(producto){
+    producto.stock += producto.unidadAVender;
+}
 
+function restarStock(producto){
+    producto.stock -= producto.unidadAVender;
+}
 
+function verificarProducto(producto,unidad,lista){
+    
+    elementoEncontrado = lista.find(item => item.elemento === producto.elemento);
+    
+    if(elementoEncontrado){
+        sumarStock(producto);
+        producto.unidadAVender -= unidad; 
+        alert("Se quitó el producto del bolso");
+        limpiarLista(lista);
+    }
+    else{
+        alert("El producto ingresado no se encuentra en el bolso");
+    }
+}
