@@ -46,32 +46,15 @@ function verPrecio(producto){
 function agregarProducto(lista,producto){
 
     if(nombre == null){
-        alert("Por favor, ingrese su nombre para poder agregar el producto al BOLSO");
+        alert("Por favor, ingrese su nombre para poder agregar el producto al bolso");
     }
     else{
         verificarStock(producto);
         restarStock(producto);
         parcial = producto.precio * producto.unidadAVender;
         totalGeneral();
-        
         lista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
-
         alert("Se agrego el producto al bolso");
-    }
-}
-
-function quitarProducto(lista){
-
-    if(nombre != null && lista.length>0){
-        verDetalleLista(lista);
-        let producto = prompt("Seleccione el producto que desea quitar del bolso: " +  "\n Codigos" + "\n Camiseta Argentina 86 = arg86" 
-        + "\n Camiseta Argentina 22 = arg22" + "\n Short Argentina 86 = shortArg86" + "\n Pelota Adidas Fevernova 02 = pelota02" + "\n Pelota Al Rhila 22 = pelota22"
-        );
-        let unidad = prompt("Seleccione la cantidad que desea quitar: ");
-        verificarProducto(producto,unidad,lista);
-    }
-    else{
-        alert("EL BOLSO NO POSEE PRODUCTOS");
     }
 }
 
@@ -144,25 +127,6 @@ function mostrarMensajeCompra(rta){
     }
 }
 
-function sumarStock(producto){
-    producto.stock += producto.unidadAVender;
-}
-
 function restarStock(producto){
     producto.stock -= producto.unidadAVender;
-}
-
-function verificarProducto(producto,unidad,lista){
-    
-    elementoEncontrado = lista.find(item => item.elemento === producto.elemento);
-    
-    if(elementoEncontrado){
-        sumarStock(producto);
-        producto.unidadAVender -= unidad; 
-        alert("Se quitó el producto del bolso");
-        limpiarLista(lista);
-    }
-    else{
-        alert("El producto ingresado no se encuentra en el bolso");
-    }
 }
