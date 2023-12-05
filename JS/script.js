@@ -110,7 +110,6 @@ function finalizarCompra(lista){
     if(nombre != null && lista.length>0){
         verDetalleLista(lista);
         let respuesta = confirm("Desea realizar la compra? El total es: " + total);
-        limpiarLista(lista);
         mostrarMensajeCompra(respuesta);
     }
     else{
@@ -121,6 +120,7 @@ function finalizarCompra(lista){
 function mostrarMensajeCompra(rta){
     if(rta == true){
         alert("Gracias por su compra");
+        limpiarLista(lista);
     }
     else{
         alert("No se realizo la compra");
