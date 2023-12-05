@@ -44,7 +44,8 @@ function verPrecio(producto){
 }
 
 function agregarProducto(lista,producto){
-
+/*Se valida que el usuario haya ingresado su nombre para poder agregar al bolso de compras el producto. Se verifica el stock, se resta del stock lo ingresado por el usuario,
+ se calcula el importe parcial para agregar a la lista y se guarda el total.*/
     if(nombre == null){
         alert("Por favor, ingrese su nombre para poder agregar el producto al bolso");
     }
@@ -59,7 +60,7 @@ function agregarProducto(lista,producto){
 }
 
 function verLista(lista){
-
+//Se verifica si el usuario ingreso un nombre y si la lista posee elementos.
     if(nombre != null && lista.length>0){
         verDetalleLista(lista);
     }
@@ -80,7 +81,7 @@ function limpiarLista(lista){
 }
 
 function verificarDatos(){ 
-
+//Se solicita al usuario la cantidad de unidades que desea agregar de un producto determinado. En caso de que no ingrese un numero, se solicitara nuevamente.
     let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
     
     while(isNaN(cantidad) || cantidad < 1){
@@ -92,7 +93,7 @@ function verificarDatos(){
 }
 
 function verificarStock(producto){
-
+//Se verifica que la cantidad de unidades solicitadas por el usuario sea menor al stock disponible.
     verificarDatos();
     if(producto.stock < unidad){
         alert("NO DISPONEMOS DE STOCK PARA AGREGAR LA CANTIDAD SOLICITADA. Por favor ingrese un número menor a " + producto.stock);
@@ -107,6 +108,8 @@ function totalGeneral(){
 }
 
 function finalizarCompra(lista){
+/*Se valida que la lista no este vacia y que el usuario haya ingresado su nombre. Se muestra la lista, se muestra el total y se solicita confirmacion al usuario para proceder 
+con la compra. En caso de que el bolso de compras este vacio, se avisa al usuario.*/
     if(nombre != null && lista.length>0){
         verDetalleLista(lista);
         let respuesta = confirm("Desea realizar la compra? El total es: " + total);
@@ -118,6 +121,7 @@ function finalizarCompra(lista){
 }
 
 function mostrarMensajeCompra(rta){
+//Se muestra un mensaje al finalizar la compra. En caso de que el usuario acepte, se borra la lista. Caso contrario, la lista permanece con lo añadido.
     if(rta == true){
         alert("Gracias por su compra");
         limpiarLista(lista);
@@ -129,4 +133,10 @@ function mostrarMensajeCompra(rta){
 
 function restarStock(producto){
     producto.stock -= producto.unidadAVender;
+}
+
+function vaciarBolso(lista){
+//Permite vaciar la lista y da aviso al usuario de que el bolso de compras se vacio correctamente.
+    limpiarLista(lista);
+    alert("EL BOLSO SE HA VACIADO EXITOSAMENTE");
 }
