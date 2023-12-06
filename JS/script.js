@@ -151,6 +151,8 @@ function vaciarBolso(lista){
 }
 
 function mostrarListaAlUSuario(lista){
+/*Recibe una lista y crea una nueva segun los productos que posee para poder ser mostrada correctamente al usuario. En caso de que el producto posea unidadesAVender < 1, este producto
+no sera incluido en la nueva lista*/
     nuevaLista = [];
     for (producto of lista){
         if(producto.unidadAVender > 0){
@@ -162,7 +164,7 @@ function mostrarListaAlUSuario(lista){
 }
 
 function quitarProducto(lista,producto){
-//Se quita el producto seleccionado por el usuario. Se añade al stock la cantidad ingresada por el usuario y se recalcula el precio total.
+//Quita el producto seleccionado por el usuario. Se añade al stock la cantidad ingresada por el usuario y se recalcula el precio total.
     let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
     
     while(isNaN(cantidad) || cantidad < 1){
@@ -185,6 +187,7 @@ function quitarProducto(lista,producto){
 }
 
 function modificarPrecioTotal(lista){
+//Verifica los productos de la lista y calcula el precio total.
     total = 0;
     parcial = 0;
     let nuevoParcial;
