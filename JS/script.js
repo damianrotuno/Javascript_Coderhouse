@@ -165,24 +165,31 @@ no sera incluido en la nueva lista*/
 
 function quitarProducto(lista,producto){
 //Quita el producto seleccionado por el usuario. Se añade al stock la cantidad ingresada por el usuario y se recalcula el precio total.
-    let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
+
+    if(lista.includes(producto)){
+
+        let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
     
-    while(isNaN(cantidad) || cantidad < 1){
-        alert("ERROR. POR FAVOR, INGRESE UN NÚMERO VÁLIDO");
-        cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");    
+        while(isNaN(cantidad) || cantidad < 1){
+            alert("ERROR. POR FAVOR, INGRESE UN NÚMERO VÁLIDO");
+            cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");    
+        }
+
+        unidad = parseInt(cantidad);
+
+        nuevaLista = lista.filter(item => item.id != producto);
+        lista = nuevaLista;
+
+        producto.unidadAVender -= unidad;
+        producto.stock += unidad;
+    
+        modificarPrecioTotal(lista);
+
+        alert("Se quito correctamente el producto");
     }
-
-    unidad = parseInt(cantidad);
-
-    nuevaLista = lista.filter(item => item.id != producto);
-    lista = nuevaLista;
-
-    producto.unidadAVender -= unidad;
-    producto.stock += unidad;
-    
-    modificarPrecioTotal(lista);
-
-    alert("Se quito correctamente el producto");
+    else{
+        alert ("El producto no se encuentra en el bolso");
+    }
 
 }
 
