@@ -5,25 +5,27 @@ let total = 0;
 let parcial = 0;
 let unidad = 0;
 let listaDeBolso = [];
+//let listaInterna = [];
 
 /* *********************************************************************************************************************************************** */
 
 /* ************************************************ OBJETOS ************************************************************************************** */
 
 class Producto{
-    constructor(elemento,precio,stock,unidadAVender){
+    constructor(elemento,precio,stock,unidadAVender,id){
         this.elemento = elemento;
         this.precio = precio;
         this.stock = stock;
-        this.unidadAVender;
+        this.unidadAVender = unidadAVender;
+        this.id = id;
     }
 }
 
-let arg86 = new Producto("Camiseta Argentina 1986",120000,7,0);
-let arg22 = new Producto("Camiseta Argentina 2022",75000,15,0);
-let shortArg86 = new Producto("Short Argentina 1986",35000,3,0);
-let pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000,2,0);
-let pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20,0);
+const arg86 = new Producto("Camiseta Argentina 1986",120000,7,0,1);
+const arg22 = new Producto("Camiseta Argentina 2022",75000,15,0,2);
+const shortArg86 = new Producto("Short Argentina 1986",35000,3,0,3);
+const pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000,2,0,4);
+const pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20,0,5);
 
 /* *********************************************************************************************************************************************** */ 
 
@@ -54,7 +56,7 @@ function agregarProducto(lista,producto){
         restarStock(producto);
         parcial = producto.precio * producto.unidadAVender;
         totalGeneral();
-        lista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
+        lista.push(producto);
         alert("Se agrego el producto al bolso");
     }
 }
@@ -70,7 +72,8 @@ function verLista(lista){
 }
 
 function verDetalleLista(lista){  
-    alert(lista);
+    nuevaLista = mostrarListaAlUSuario(lista);
+    alert(nuevaLista);
 }
 
 function limpiarLista(lista){
@@ -113,18 +116,18 @@ con la compra. En caso de que el bolso de compras este vacio, se avisa al usuari
     if(nombre != null && lista.length>0){
         verDetalleLista(lista);
         let respuesta = confirm("Desea realizar la compra? El total es: " + total);
-        mostrarMensajeCompra(respuesta);
+        mostrarMensajeCompra(respuesta,lista);
     }
     else{
         alert("EL BOLSO NO POSEE PRODUCTOS");
     }
 }
 
-function mostrarMensajeCompra(rta){
+function mostrarMensajeCompra(rta,lista){
 //Se muestra un mensaje al finalizar la compra. En caso de que el usuario acepte, se borra la lista. Caso contrario, la lista permanece con lo añadido.
     if(rta == true){
-        alert("Gracias por su compra");
         limpiarLista(lista);
+        alert("Gracias por su compra");
     }
     else{
         alert("No se realizo la compra");
@@ -137,6 +140,61 @@ function restarStock(producto){
 
 function vaciarBolso(lista){
 //Permite vaciar la lista y da aviso al usuario de que el bolso de compras se vacio correctamente.
-    limpiarLista(lista);
-    alert("EL BOLSO SE HA VACIADO EXITOSAMENTE");
+    if(lista.length>0){
+        limpiarLista(lista);
+        alert("EL BOLSO SE HA VACIADO EXITOSAMENTE");
+    }
+    else{
+        alert("EL BOLSO NO POSEE PRODUCTOS");
+    }
+    
 }
+
+function mostrarListaAlUSuario(lista){
+    nuevaLista = [];
+    for (producto of lista){
+        if(producto.unidadAVender > 0){
+            parcial = producto.precio * producto.unidadAVender;
+            nuevaLista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
+        }
+    }
+    return nuevaLista;
+}
+
+function quitarProducto(lista,producto){
+//Se quita el producto seleccionado por el usuario. Se añade al stock la cantidad ingresada por el usuario y se recalcula el precio total.
+    let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
+    
+    while(isNaN(cantidad) || cantidad < 1){
+        alert("ERROR. POR FAVOR, INGRESE UN NÚMERO VÁLIDO");
+        cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");    
+    }
+
+    unidad = parseInt(cantidad);
+
+    nuevaLista = lista.filter(item => item.id != producto);
+    lista = nuevaLista;
+
+    producto.unidadAVender -= unidad;
+    producto.stock += unidad;
+    
+    modificarPrecioTotal(lista);
+
+    alert("Se quito correctamente el producto");
+
+}
+
+function modificarPrecioTotal(lista){
+    total = 0;
+    parcial = 0;
+    let nuevoParcial;
+    
+    for (producto of lista){
+        nuevoParcial = producto.precio * producto.unidadAVender;
+        parcial += nuevoParcial; 
+    }
+
+    totalGeneral();
+}
+
+
