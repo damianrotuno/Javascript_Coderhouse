@@ -6,24 +6,23 @@
     <title>SIMPLEMENTE FÚTBOL</title>
 
     <link rel="stylesheet" href="./CSS/style.css">
-    <script src="./JS/script.js"></script>
 
 </head>
 <body>
     <h1>SIMPLEMENTE FÚTBOL
         <div class="carrito">
         
-            <button onclick="verLista(listaDeBolso)">   
+            <button onclick="verLista(carrito)">   
                 <img src="./Imagenes/bolso_carrito.jpg"></img>
             </button>
         </div>
         <div class="comprar">
-            <button onclick="finalizarCompra(listaDeBolso)">
+            <button onclick="finalizarCompra(carrito)">
                 COMPRAR
             </button>
         </div>
         <div class="quitar">
-            <button onclick="vaciarBolso(listaDeBolso)">
+            <button onclick="vaciarCarrito(carrito)">
                 VACIAR BOLSO
             </button>
         </div>
@@ -31,19 +30,13 @@
 
     <h2>Tienda online de articulos relacionados con el fútbol </h2>
 
-    <div class="bienvenida">
-        <h4><button onclick="bienvenidaUsuario()">Ingrese sus datos</button></h4>
-
-        <p id="msjBienvenida"></p>
-    </div>
-
         <div class="product">         
             <p>CAMISETA TITULAR ARGENTINA MUNDIAL 1986</p>
             <img src="./Imagenes/argentina1986.jpg"></img>
     
-            <button onclick="verPrecio(arg86)">Ver precio</button>
-            <button onclick="agregarProducto(listaDeBolso,arg86)">Agregar al bolso</button>
-            <button onclick="quitarProducto(listaDeBolso,arg86)">Quitar del bolso</button>
+            <p>Precio: 120000</p>
+            <button onclick="agregarProducto(carrito,arg86)">Agregar al bolso</button>
+            <button onclick="quitarProducto(carrito,arg86)">Quitar del bolso</button>
     
         </div>
 
@@ -51,9 +44,9 @@
             <p>CAMISETA TITULAR ARGENTINA MUNDIAL 2022</p>
             <img src="./Imagenes/argentina2022.jpg"></img>
 
-            <button onclick="verPrecio(arg22)">Ver precio</button>
-            <button onclick="agregarProducto(listaDeBolso,arg22)">Agregar al bolso</button>
-            <button onclick="quitarProducto(listaDeBolso,arg22)">Quitar del bolso</button>
+            <p>Precio: 75000</p>
+            <button onclick="agregarProducto(carrito,arg22)">Agregar al bolso</button>
+            <button onclick="quitarProducto(carrito,arg22)">Quitar del bolso</button>
 
         </div>
 
@@ -61,9 +54,9 @@
             <p>SHORT TITULAR ARGENTINA MUNDIAL 1986</p>
             <img src="./Imagenes/short1986.jpg"></img>
 
-            <button onclick="verPrecio(shortArg86)">Ver precio</button>
-            <button onclick="agregarProducto(listaDeBolso,shortArg86)">Agregar al bolso</button>
-            <button onclick="quitarProducto(listaDeBolso,shortArg86)">Quitar del bolso</button>
+            <p>Precio: 35000</p>
+            <button onclick="agregarProducto(carrito,shortArg86)">Agregar al bolso</button>
+            <button onclick="quitarProducto(carrito,shortArg86)">Quitar del bolso</button>
 
         </div>
 
@@ -71,9 +64,9 @@
             <p>PELOTA ADIDAS FEVERNOVA MUNDIAL 2002</p>
             <img src="./Imagenes/pelota2002.jpg"></img>
 
-            <button onclick="verPrecio(pelota02)">Ver precio</button>
-            <button onclick="agregarProducto(listaDeBolso,pelota02)">Agregar al bolso</button>
-            <button onclick="quitarProducto(listaDeBolso,pelota02)">Quitar del bolso</button>
+            <p>Precio: 22000</p>
+            <button onclick="agregarProducto(carrito,pelota02)">Agregar al bolso</button>
+            <button onclick="quitarProducto(carrito,pelota02)">Quitar del bolso</button>
 
         </div>
 
@@ -81,10 +74,12 @@
             <p>PELOTA AL RHILA MUNDIAL 2022</p>
             <img src="./Imagenes/pelota2022.jpg"></img>
 
-            <button onclick="verPrecio(pelota22)">Ver precio</button>
-            <button onclick="agregarProducto(listaDeBolso,pelota22)">Agregar al bolso</button>
-            <button onclick="quitarProducto(listaDeBolso,pelota22)">Quitar del bolso</button>
+            <p>Precio: 26000</p>
+            <button onclick="agregarProducto(carrito,pelota22)">Agregar al bolso</button>
+            <button onclick="quitarProducto(carrito,pelota22)">Quitar del bolso</button>
 
         </div>
+
+        <script src="./JS/script.js"></script>
 </body>
 </html>
