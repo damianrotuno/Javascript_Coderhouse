@@ -4,27 +4,67 @@ let nombre;
 let total = 0;
 let parcial = 0;
 let unidad = 0;
-let carrito = [];
+const carrito = [];
 
 /* *********************************************************************************************************************************************** */
 
-/* ************************************************ OBJETOS ************************************************************************************** */
+/* ************************************************ HTML ************************************************************************************** */
 
-class Producto{
-    constructor(elemento,precio,stock,unidadAVender,id){
-        this.elemento = elemento;
-        this.precio = precio;
-        this.stock = stock;
-        this.unidadAVender = unidadAVender;
-        this.id = id;
-    }
-}
 
-const arg86 = new Producto("Camiseta Argentina 1986",120000,7,0,1);
-const arg22 = new Producto("Camiseta Argentina 2022",75000,15,0,2);
-const shortArg86 = new Producto("Short Argentina 1986",35000,3,0,3);
-const pelota02 = new Producto("Pelota Adidas Fevernova Mundial 2002",22000,2,0,4);
-const pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20,0,5);
+/************************ Mostrar productos ********************************** */
+const container = document.getElementById("container");
+
+productos.forEach( (el) => {
+
+    const product = document.createElement("div");
+    product.className = "product";
+
+    const nombreProducto = document.createElement("h4");
+    nombreProducto.innerText = `${el.elemento}`; 
+
+    const imgProducto = document.createElement("img");
+    imgProducto.src = el.img;
+
+    const precioProducto = document.createElement("p");
+    precioProducto.innerText = `${"Precio: " + el.precio}`;
+
+    const buttonAgregar = document.createElement("button");
+    buttonAgregar.innerText = "Agregar producto";
+    buttonAgregar.onclick = () => agregarProducto(carrito,el);
+
+    const buttonQuitar = document.createElement("button");
+    buttonQuitar.innerText = "Quitar producto";
+    buttonQuitar.onclick = () => quitarProducto(carrito,el);
+    
+    product.appendChild(nombreProducto);
+    product.appendChild(imgProducto);
+    product.appendChild(precioProducto);
+    product.appendChild(buttonAgregar);
+    product.appendChild(buttonQuitar);
+
+    container.appendChild(product);
+    
+})
+
+/************************ Carrito ************************************ */
+
+const verCarrito = document.createElement("carrito");
+verCarrito.innerText = "Ver Carrito";
+verCarrito.onclick = () => verLista(carrito);
+
+container.appendChild(verCarrito);
+
+const comprarCarrito = document.createElement("comprar");
+comprarCarrito.innerText = "Comprar";
+comprarCarrito.onclick = () => finalizarCompra(carrito);
+
+container.appendChild(comprarCarrito);
+
+const vaciarLista = document.createElement("quitar");
+vaciarLista.innerText = "Vaciar bolso";
+vaciarLista.onclick = () => vaciarCarrito(carrito);
+
+container.appendChild(vaciarLista);
 
 /* *********************************************************************************************************************************************** */ 
 
@@ -32,12 +72,21 @@ const pelota22 = new Producto("Pelota Adidas Al Rhila Mundial 2022",26000,20,0,5
 
 function agregarProducto(lista,producto){
 /*Se verifica el stock, se resta del stock lo ingresado por el usuario, se calcula el importe parcial para agregar a la lista y se guarda el total.*/
-    verificarStock(producto);
-    restarStock(producto);
-    parcial += producto.precio * producto.unidadAVender;
-    totalGeneral();
-    lista.push(producto);
-    localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+    if(lista.includes(producto)){
+        let unidadAVenderActual = producto.unidadAVender;
+        verificarStock(producto);
+        restarStock(producto);
+        total += producto.precio * producto.unidadAVender;
+        producto.unidadAVender += unidadAVenderActual;
+        localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+    }
+    else{
+        verificarStock(producto);
+        restarStock(producto);
+        total += producto.precio * producto.unidadAVender;
+        lista.push(producto);
+        localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+    }
     alert("Se agrego el producto al bolso");
 
 }
@@ -53,7 +102,7 @@ function verLista(lista){
 }
 
 function verDetalleLista(lista){
-/**/
+/*Muestra el detalle de la lista ingresada. Valida si hay productos en memoria para mostrarlo o muestra la lista de la sesion actual y luego la guarda en el local storage*/
     if(hayProductosEnMemoria() && estaVacia(lista)){
         lista = mostrarCarritoSinComprar();
         calcularParcialEnMemoria();
@@ -104,17 +153,14 @@ function verificarStock(producto){
     producto.unidadAVender = unidad;
 }
 
-function totalGeneral(){
-    total = total + parcial;
-    localStorage.setItem("total",JSON.stringify(total));
-}
-
 function finalizarCompra(lista){
 /*Se valida que la lista no este vacia. Se muestra la lista, se muestra el total y se solicita confirmacion al usuario para proceder 
 con la compra. En caso de que el bolso de compras este vacio, se avisa al usuario.*/
     if(hayProductosEnMemoria() && estaVacia(lista)){
-        verDetalleLista(lista);
-        totalGeneral();
+        nuevaLista = mostrarCarritoSinComprar();
+        verDetalleLista(nuevaLista);
+        calcularParcialEnMemoria();
+        total = parcial;
         let respuesta = confirm("Desea realizar la compra? El total es: " + total);
         mostrarMensajeCompra(respuesta,lista);
     }
@@ -220,7 +266,7 @@ function modificarPrecioTotal(lista){
         parcial += nuevoParcial; 
     });
 
-    totalGeneral();
+    total = parcial;
 }
 
 function contarCantidadDeProductosEnLista(prod,lista){
@@ -245,9 +291,9 @@ function guardarCarritoSinComprar(lista){
 
 function mostrarCarritoSinComprar(){
 /*Trae todos los productos que hay almacenados en local storage*/
-    let lista = JSON.parse(localStorage.getItem("carritoSinComprar"));
+    let carritoSinComprar = JSON.parse(localStorage.getItem("carritoSinComprar"));
 
-    return lista;
+    return carrito.concat(carritoSinComprar);
 }
 
 function hayProductosEnMemoria(){
@@ -261,14 +307,14 @@ function hayProductosEnMemoria(){
 
 function calcularParcialEnMemoria(){
 /*Se trae los productos que estan guardados en local storage, se pasan a una lista interna y se calcula el importe que suman todos ellos. */
-    let carritoSinComprar = mostrarCarritoSinComprar();
+    let carritoPendienteDeCompra = mostrarCarritoSinComprar();
     let nuevoParcial = 0;
 
-    carritoSinComprar.forEach( (el) => { nuevoParcial += (el.precio * el.unidadAVender) } )
+    carritoPendienteDeCompra.forEach( (el) => { nuevoParcial += (el.precio * el.unidadAVender) } );
 
     parcial = nuevoParcial;
 }
 
 function restablecerStock(lista){
-    lista.forEach((el) => el.stock += el.unidadAVender)
+    lista.forEach((el) => { el.stock += el.unidadAVender } );
 }

@@ -55,26 +55,6 @@ p{
     cursor: pointer;
 }
 
-.carrito img{
-    position:fixed;
-    top: 5px;
-    left: 5px;
-    max-width: 7%;
-    opacity: 0.7;
-}
-
-.carrito button{
-    position:fixed;
-    top: 5px;
-    left: 5px;
-    cursor: pointer;
-}
-
-.bienvenida button{
-    cursor: pointer;
-    font-size: 20px;
-}
-
 .listaDeCompras {
     text-align: left;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -87,20 +67,54 @@ p{
     font-size: 20px;
 }
 
-.comprar button{
+#container carrito {
     display: block;
+    margin: auto;
     position:fixed;
-    top: 110px;
-    left: 5px;
-    display: block;
+    top: 5px;
+    right: 5px;
     cursor: pointer;
+    background-color: #f4f8fab9;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    font-size: 20px;
+
+    
 }
 
-.quitar button{
+#container comprar{
     display: block;
+    margin: auto;
     position:fixed;
-    top: 135px;
-    left: 5px;
-    display: block;
+    top: 30px;
+    right: 5px;
     cursor: pointer;
+    background-color: #f4f8fab9;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    font-size: 20px;
+}
+
+#container quitar{
+    display: block;
+    margin: auto;
+    position:fixed;
+    top: 55px;
+    right: 5px;
+    cursor: pointer;
+    background-color: #f4f8fab9;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    font-size: 20px;
+}
+
+button:hover,
+#container carrito:hover,
+#container comprar:hover,
+#container quitar:hover {
+    background-color: #31aafc;
+    border: 1px solid #31aafc;
 }
