@@ -8,88 +8,112 @@ const carrito = [];
 
 /* *********************************************************************************************************************************************** */
 
-/* ************************************************ HTML ************************************************************************************** */
+/* ************************************************ JSON ************************************************************************************** */
 
-
-/************************ Mostrar productos ********************************** */
-const container = document.getElementById("container");
-
-productos.forEach( (el) => {
-
-    const product = document.createElement("div");
-    product.className = "product";
-
-    const nombreProducto = document.createElement("h4");
-    nombreProducto.innerText = `${el.elemento}`; 
-
-    const imgProducto = document.createElement("img");
-    imgProducto.src = el.img;
-
-    const precioProducto = document.createElement("p");
-    precioProducto.innerText = `${"Precio: " + el.precio}`;
-
-    const buttonAgregar = document.createElement("button");
-    buttonAgregar.innerText = "Agregar producto";
-    buttonAgregar.onclick = () => agregarProducto(carrito,el);
-
-    const buttonQuitar = document.createElement("button");
-    buttonQuitar.innerText = "Quitar producto";
-    buttonQuitar.onclick = () => quitarProducto(carrito,el);
+function traerProductos(){
+    fetch(`./JS/productos.json`)
     
-    product.appendChild(nombreProducto);
-    product.appendChild(imgProducto);
-    product.appendChild(precioProducto);
-    product.appendChild(buttonAgregar);
-    product.appendChild(buttonQuitar);
+    .then(response => response.json())
+    .then(data => {
+        const productos = data;
 
-    container.appendChild(product);
+
+    /************************ Mostrar productos ********************************** */
+    const container = document.getElementById("container");
+
+    productos.forEach( (el) => {
+
+        const product = document.createElement("div");
+        product.className = "product";
+
+        const nombreProducto = document.createElement("h4");
+        nombreProducto.innerText = `${el.elemento}`; 
+
+        const imgProducto = document.createElement("img");
+        imgProducto.src = el.img;
+
+        const precioProducto = document.createElement("p");
+        precioProducto.innerText = `${"Precio: " + el.precio}`;
+
+        const buttonAgregar = document.createElement("button");
+        buttonAgregar.className = "btn btn-primary";
+        buttonAgregar.innerText = "Agregar producto";
+        buttonAgregar.onclick = () => ingresarCantidad(el,carrito)//agregarProducto(carrito,el);
+
+        const buttonQuitar = document.createElement("button");
+        buttonQuitar.className = "btn btn-primary"
+        buttonQuitar.innerText = "Quitar producto";
+        buttonQuitar.onclick = () => quitarProducto(carrito,el);
     
+        product.appendChild(nombreProducto);
+        product.appendChild(imgProducto);
+        product.appendChild(precioProducto);
+        product.appendChild(buttonAgregar);
+        product.appendChild(buttonQuitar);
+
+        container.appendChild(product);
+
+    })
 })
 
-/************************ Carrito ************************************ */
+}
 
-const verCarrito = document.createElement("carrito");
-verCarrito.innerText = "Ver Carrito";
-verCarrito.onclick = () => verLista(carrito);
+        /************************ Carrito ************************************ */
+        
+function mostrarBotonesCarrito(){
 
-container.appendChild(verCarrito);
+        const imgCarrito = document.createElement("img");
+        imgCarrito.className = "imgCarrito";
+        imgCarrito.src ="./Imagenes/bolso_carrito.jpg";
+        imgCarrito.onclick = () => verLista(carrito);
+        
+        container.appendChild(imgCarrito);
 
-const comprarCarrito = document.createElement("comprar");
-comprarCarrito.innerText = "Comprar";
-comprarCarrito.onclick = () => finalizarCompra(carrito);
+        const vaciarLista = document.createElement("quitar");
+        vaciarLista.className = "btn btn-secondary";
+        vaciarLista.innerText = "Vaciar bolso";
+        vaciarLista.onclick = () => vaciarCarrito(carrito);
 
-container.appendChild(comprarCarrito);
+        container.appendChild(vaciarLista);
 
-const vaciarLista = document.createElement("quitar");
-vaciarLista.innerText = "Vaciar bolso";
-vaciarLista.onclick = () => vaciarCarrito(carrito);
+}
 
-container.appendChild(vaciarLista);
+
+setTimeout(() => {
+    container.innerText = "";
+    mostrarBotonesCarrito();
+    setTimeout(() => {
+        traerProductos();
+    }, 300)
+},1200)
+
 
 /* *********************************************************************************************************************************************** */ 
 
 /* ************************************************ FUNCIONES ************************************************************************************ */
 
-function agregarProducto(lista,producto){
+/*function agregarProducto(lista,producto){
 /*Se verifica el stock, se resta del stock lo ingresado por el usuario, se calcula el importe parcial para agregar a la lista y se guarda el total.*/
-    if(lista.includes(producto)){
-        let unidadAVenderActual = producto.unidadAVender;
-        verificarStock(producto);
-        restarStock(producto);
-        total += producto.precio * producto.unidadAVender;
+    /*if(lista.includes(producto)){
+        ingresarCantidad(producto);
+        let unidadAVenderActual = producto.unidadAVender; 
+        //verificarStock(producto);
+        //restarStock(producto);
+        //total += producto.precio * producto.unidadAVender;
         producto.unidadAVender += unidadAVenderActual;
         localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
     }
     else{
-        verificarStock(producto);
-        restarStock(producto);
-        total += producto.precio * producto.unidadAVender;
+        ingresarCantidad(producto);
+        //verificarStock(producto;)
+        //restarStock(producto);
+        //total += producto.precio * producto.unidadAVender;
         lista.push(producto);
         localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+        
     }
-    alert("Se agrego el producto al bolso");
-
-}
+    
+}*/
 
 function verLista(lista){
 //Se verifica si la lista posee elementos.
@@ -97,7 +121,7 @@ function verLista(lista){
         verDetalleLista(lista);
     }
     else{
-        alert("EL BOLSO NO POSEE PRODUCTOS");
+        msjBolsoSinProductos();
     }
 }
 
@@ -106,11 +130,13 @@ function verDetalleLista(lista){
     if(hayProductosEnMemoria() && estaVacia(lista)){
         lista = mostrarCarritoSinComprar();
         calcularParcialEnMemoria();
-        alert(mostrarListaAlUSuario(lista));
+        mostrarListaEnVentana(lista);
+
     }  
     else{
         guardarCarritoSinComprar(lista);
-        alert(mostrarListaAlUSuario(lista));
+        mostrarListaEnVentana(lista);
+
     }
 }
 
@@ -130,21 +156,21 @@ function estaVacia(lista){
     return true;
 }
 
-function verificarDatos(producto){ 
+/*function verificarDatos(producto){ 
 //Se solicita al usuario la cantidad de unidades que desea agregar de un producto determinado. En caso de que no ingrese un numero, se solicitara nuevamente.
     let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: \n" + "Stock disponible: " + producto.stock);
     
-    while(isNaN(cantidad) || cantidad < 1 || producto.stock < cantidad){
+    if(isNaN(cantidad) || cantidad < 1 || producto.stock < cantidad ){
         alert("ERROR. POR FAVOR, INGRESE UN NÚMERO VÁLIDO");
-        cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: \n" + "Stock disponible: " + producto.stock);    
+        cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: \n" + "Stock disponible: " + producto.stock);
     }
-    
     unidad = parseInt(cantidad);
 }
 
+*/
+
 function verificarStock(producto){
 //Se verifica que la cantidad de unidades solicitadas por el usuario sea menor al stock disponible.
-    verificarDatos(producto);
     if(producto.stock < unidad){
         alert("NO DISPONEMOS DE STOCK PARA AGREGAR LA CANTIDAD SOLICITADA. Por favor ingrese un número menor a " + producto.stock);
         verificarDatos(producto);
@@ -161,27 +187,13 @@ con la compra. En caso de que el bolso de compras este vacio, se avisa al usuari
         verDetalleLista(nuevaLista);
         calcularParcialEnMemoria();
         total = parcial;
-        let respuesta = confirm("Desea realizar la compra? El total es: " + total);
-        mostrarMensajeCompra(respuesta,lista);
     }
     else if(!estaVacia(lista)){
         verDetalleLista(lista);
-        let respuesta = confirm("Desea realizar la compra? El total es: " + total);
-        mostrarMensajeCompra(respuesta,lista);
-    }
-    else{
-        alert("EL BOLSO NO POSEE PRODUCTOS");
-    }
-}
 
-function mostrarMensajeCompra(rta,lista){
-//Se muestra un mensaje al finalizar la compra. En caso de que el usuario acepte, se borra la lista. Caso contrario, la lista permanece con lo añadido.
-    if(rta == true){
-        limpiarLista(lista);
-        alert("Gracias por su compra");
     }
     else{
-        alert("No se realizo la compra");
+        msjBolsoSinProductos();
     }
 }
 
@@ -192,12 +204,10 @@ function restarStock(producto){
 function vaciarCarrito(lista){
 //Permite vaciar la lista y da aviso al usuario de que el bolso de compras se vacio correctamente.
     if(!estaVacia(lista) || hayProductosEnMemoria()){
-        restablecerStock(lista);
-        limpiarLista(lista);
-        alert("EL BOLSO SE HA VACIADO EXITOSAMENTE");
+        msjConfirmarVaciarCarrito(lista);
     }
     else{
-        alert("EL BOLSO NO POSEE PRODUCTOS");
+        msjBolsoSinProductos();
     }
     
 }
@@ -216,11 +226,12 @@ no sera incluido en la nueva lista*/
         });
     }
     else{
+        
         for(let i=0;i<localStorage.length;i++){
             let clave = localStorage.key(i);
             let producto = JSON.parse(localStorage.getItem(clave));
             nuevaLista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
-        }   
+        }
     }
     return nuevaLista;
 }
@@ -317,4 +328,108 @@ function calcularParcialEnMemoria(){
 
 function restablecerStock(lista){
     lista.forEach((el) => { el.stock += el.unidadAVender } );
+}
+
+
+/* ************************************************ ALERTAS ************************************************************************************ */
+
+function msjAgregarProducto(){
+    Swal.fire({
+        title: "Se agrego el producto al bolso",
+        icon: "success"
+      });
+}
+
+function msjBolsoSinProductos(){
+    Swal.fire({
+        icon: "error",
+        title: "El bolso no posee productos",
+      });
+}
+
+function msjConfirmarVaciarCarrito(lista){
+    Swal.fire({
+        title: "Estas seguro que deseas vaciar el bolso?",
+        text: "Esta acción no tiene vuelta atras",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, vaciar el bolso!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            restablecerStock(lista);
+            limpiarLista(lista);
+          Swal.fire({
+            title: "Bolso vaciado",
+            text: "Se han eliminado todos los productos del bolso",
+            icon: "success"
+          });
+        }
+      });
+}
+
+function mostrarListaEnVentana(lista){
+    let listaProductos = mostrarListaAlUSuario(lista);
+    swal.fire({
+        title:"Bolso de compras",
+        html:`<pre>${listaProductos}\n\n Total: ${total}</pre>`,
+        icon:"info",
+        width: 750,
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        cancelButtonText:"Cancelar",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Comprar",
+    }).then((result) => {
+        if(result.isConfirmed){
+            limpiarLista(lista);
+            Swal.fire({
+                title: "Compra realizada",
+                icon: "success"
+            });
+        }
+    });
+}
+
+function ingresarCantidad(producto,lista){
+    
+    Swal.fire({
+        title: "Ingrese la cantidad de unidades que desea agregar:",
+        input: "number",
+        inputAttributes: {
+          min: 1,
+          max: producto.stock,
+          step: 1,
+        },
+        showCancelButton: true,
+        confirmButtonText: "Agregar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            if(lista.includes(producto)){
+                producto.unidadAVender = result.value;
+                let unidadAVenderActual = producto.unidadAVender;
+                restarStock(producto);
+                total += producto.precio * producto.unidadAVender;
+                producto.unidadAVender += unidadAVenderActual;
+                localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+            }
+            else{
+                producto.unidadAVender = result.value;
+                restarStock(producto);
+                total += producto.precio * producto.unidadAVender;
+                lista.push(producto);
+                localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+
+            }
+          msjAgregarProducto();
+        }
+        else{
+            Swal.fire({
+                title: "No se agrego el producto al carrito",
+                icon: "error",
+            });
+        }
+      });
 }

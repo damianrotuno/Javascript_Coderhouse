@@ -1,8 +1,5 @@
-body{
-    margin: 0;
-    padding: 0;
-    background-color: grey;
-    
+.color-fondo{
+    background-color: rgb(138, 138, 138);
 }
 
 h1{
@@ -48,11 +45,44 @@ p{
     margin-bottom: 10px;   
 }
 
-.product button{
-    display: block;
+body .btn-primary{
     margin: auto;
     font-size: 20px;
     cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    background-color: #31aafc;
+}
+
+body .btn-secondary{
+    display:block;
+    position: absolute;
+    margin: auto;
+    top: 110px;
+    left: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    font-size: 15px;
+    background-color: #31aafc;
+    color:white
+}
+
+body .btn-terciary{
+    display:block;
+    position: absolute;
+    margin: auto;
+    top: 150px;
+    left: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    font-size: 15px;
+    background-color: #31aafc;
+    color:white
 }
 
 .listaDeCompras {
@@ -67,54 +97,17 @@ p{
     font-size: 20px;
 }
 
-#container carrito {
+#container .imgCarrito {
+    width: 50px;
+    height: 50px;
     display: block;
     margin: auto;
-    position:fixed;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-    background-color: #f4f8fab9;
-    border-radius: 5px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-decoration: solid;
-    font-size: 20px;
-
-    
-}
-
-#container comprar{
-    display: block;
-    margin: auto;
-    position:fixed;
-    top: 30px;
-    right: 5px;
-    cursor: pointer;
-    background-color: #f4f8fab9;
-    border-radius: 5px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-decoration: solid;
-    font-size: 20px;
-}
-
-#container quitar{
-    display: block;
-    margin: auto;
-    position:fixed;
+    position:absolute;
     top: 55px;
-    right: 5px;
+    left: 5px;
     cursor: pointer;
-    background-color: #f4f8fab9;
     border-radius: 5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-decoration: solid;
     font-size: 20px;
-}
-
-button:hover,
-#container carrito:hover,
-#container comprar:hover,
-#container quitar:hover {
-    background-color: #31aafc;
-    border: 1px solid #31aafc;
 }
