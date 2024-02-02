@@ -5,7 +5,8 @@
         "stock": 7,
         "unidadAVender": 0,
         "id": 1,
-        "img": "./Imagenes/argentina1986.jpg"
+        "img": "./Imagenes/argentina1986.jpg",
+        "img2": "./Imagenes/maradona86.jpg"
     },
 
     {
@@ -14,7 +15,8 @@
         "stock": 15,
         "unidadAVender": 0,
         "id": 2,
-        "img": "./Imagenes/argentina2022.jpg"
+        "img": "./Imagenes/argentina2022.jpg",
+        "img2": "./Imagenes/messi22.jpg"
     },
 
     {
@@ -23,7 +25,8 @@
         "stock": 3,
         "unidadAVender": 0,
         "id": 3,
-        "img": "./Imagenes/short1986.jpg"
+        "img": "./Imagenes/short1986.jpg",
+        "img2": "./Imagenes/short86.jpeg"
     },
 
     {
@@ -32,7 +35,8 @@
         "stock": 2,
         "unidadAVender": 0,
         "id": 4,
-        "img": "./Imagenes/pelota2002.jpg"
+        "img": "./Imagenes/pelota2002.jpg",
+        "img2": "./Imagenes/pelota02.jpg"
     },
 
     {
@@ -41,6 +45,7 @@
         "stock": 20,
         "unidadAVender": 0,
         "id": 5,
-        "img": "./Imagenes/pelota2022.jpg"
+        "img": "./Imagenes/pelota2022.jpg",
+        "img2": "./Imagenes/pelota22.jpg"
     }
 ]

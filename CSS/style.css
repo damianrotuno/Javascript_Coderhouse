@@ -2,12 +2,15 @@
     background-color: rgb(138, 138, 138);
 }
 
-h1{
+.inicio{
+    background-color:#31aafc;
     text-align: center;
     text-decoration: solid;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 60px;
-    border-bottom: 4px solid black;
+    font-size: 50px;
+    border-bottom: 5px solid black;
+    display:block;
+
 }
 
 h2{
@@ -16,10 +19,22 @@ h2{
     font-size: 35px;
 }
 
-h4{
+nombreProducto{
     text-align: center;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 30px;
+    text-decoration: solid black;
+    display: block;
+    margin-bottom: 20px;
+}
+
+precioProducto{
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 30px;
+    text-decoration: solid black;
+    display: block;
+    margin-bottom: 20px;
 }
 
 p{
@@ -32,13 +47,15 @@ p{
     text-align: center;
     width: 30%;
     margin: 0 auto 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding: 20px;
     border-top: 2px solid black;
-    border-width:thick;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
-.product img{
+img{
     max-width: 100%;
     height: auto;
     max-height: 200px;
@@ -56,33 +73,17 @@ body .btn-primary{
 }
 
 body .btn-secondary{
-    display:block;
     position: absolute;
     margin: auto;
-    top: 110px;
-    left: 5px;
+    top: 20px;
+    right: 60px;
     cursor: pointer;
     border-radius: 5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-decoration: solid;
     font-size: 15px;
-    background-color: #31aafc;
-    color:white
-}
-
-body .btn-terciary{
-    display:block;
-    position: absolute;
-    margin: auto;
-    top: 150px;
-    left: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-decoration: solid;
-    font-size: 15px;
-    background-color: #31aafc;
-    color:white
+    background-color: rgb(138, 138, 138);
+    color: black;
 }
 
 .listaDeCompras {
@@ -103,8 +104,8 @@ body .btn-terciary{
     display: block;
     margin: auto;
     position:absolute;
-    top: 55px;
-    left: 5px;
+    top: 5px;
+    right: 5px;
     cursor: pointer;
     border-radius: 5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

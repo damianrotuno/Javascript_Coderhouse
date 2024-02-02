@@ -26,24 +26,26 @@ function traerProductos(){
         const product = document.createElement("div");
         product.className = "product";
 
-        const nombreProducto = document.createElement("h4");
+        const nombreProducto = document.createElement("nombreProducto");
         nombreProducto.innerText = `${el.elemento}`; 
 
         const imgProducto = document.createElement("img");
         imgProducto.src = el.img;
+        imgProducto.onmouseover = () => imgProducto.src = el.img2;
+        imgProducto.onmouseleave = () => imgProducto.src = el.img;
 
-        const precioProducto = document.createElement("p");
+        const precioProducto = document.createElement("precioProducto");
         precioProducto.innerText = `${"Precio: " + el.precio}`;
 
         const buttonAgregar = document.createElement("button");
         buttonAgregar.className = "btn btn-primary";
         buttonAgregar.innerText = "Agregar producto";
-        buttonAgregar.onclick = () => ingresarCantidad(el,carrito)//agregarProducto(carrito,el);
+        buttonAgregar.onclick = () => ingresarCantidadAAgregar(el,carrito)
 
         const buttonQuitar = document.createElement("button");
         buttonQuitar.className = "btn btn-primary"
         buttonQuitar.innerText = "Quitar producto";
-        buttonQuitar.onclick = () => quitarProducto(carrito,el);
+        buttonQuitar.onclick = () => ingresarCantidadAQuitar(el,carrito);
     
         product.appendChild(nombreProducto);
         product.appendChild(imgProducto);
@@ -59,7 +61,6 @@ function traerProductos(){
 }
 
         /************************ Carrito ************************************ */
-        
 function mostrarBotonesCarrito(){
 
         const imgCarrito = document.createElement("img");
@@ -92,36 +93,13 @@ setTimeout(() => {
 
 /* ************************************************ FUNCIONES ************************************************************************************ */
 
-/*function agregarProducto(lista,producto){
-/*Se verifica el stock, se resta del stock lo ingresado por el usuario, se calcula el importe parcial para agregar a la lista y se guarda el total.*/
-    /*if(lista.includes(producto)){
-        ingresarCantidad(producto);
-        let unidadAVenderActual = producto.unidadAVender; 
-        //verificarStock(producto);
-        //restarStock(producto);
-        //total += producto.precio * producto.unidadAVender;
-        producto.unidadAVender += unidadAVenderActual;
-        localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
-    }
-    else{
-        ingresarCantidad(producto);
-        //verificarStock(producto;)
-        //restarStock(producto);
-        //total += producto.precio * producto.unidadAVender;
-        lista.push(producto);
-        localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
-        
-    }
-    
-}*/
-
 function verLista(lista){
 //Se verifica si la lista posee elementos.
     if(!estaVacia(lista) || hayProductosEnMemoria()){
         verDetalleLista(lista);
     }
     else{
-        msjBolsoSinProductos();
+        msjCarritoSinProductos();
     }
 }
 
@@ -156,19 +134,6 @@ function estaVacia(lista){
     return true;
 }
 
-/*function verificarDatos(producto){ 
-//Se solicita al usuario la cantidad de unidades que desea agregar de un producto determinado. En caso de que no ingrese un numero, se solicitara nuevamente.
-    let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: \n" + "Stock disponible: " + producto.stock);
-    
-    if(isNaN(cantidad) || cantidad < 1 || producto.stock < cantidad ){
-        alert("ERROR. POR FAVOR, INGRESE UN NÚMERO VÁLIDO");
-        cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: \n" + "Stock disponible: " + producto.stock);
-    }
-    unidad = parseInt(cantidad);
-}
-
-*/
-
 function verificarStock(producto){
 //Se verifica que la cantidad de unidades solicitadas por el usuario sea menor al stock disponible.
     if(producto.stock < unidad){
@@ -193,7 +158,7 @@ con la compra. En caso de que el bolso de compras este vacio, se avisa al usuari
 
     }
     else{
-        msjBolsoSinProductos();
+        msjCarritoSinProductos();
     }
 }
 
@@ -207,7 +172,7 @@ function vaciarCarrito(lista){
         msjConfirmarVaciarCarrito(lista);
     }
     else{
-        msjBolsoSinProductos();
+        msjCarritoSinProductos();
     }
     
 }
@@ -221,7 +186,7 @@ no sera incluido en la nueva lista*/
         lista.forEach((producto) => {
             if(producto.unidadAVender > 0){
                 parcial = producto.precio * producto.unidadAVender;
-                nuevaLista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
+                nuevaLista.push("\n\n Producto: " + producto.elemento + "\n Unidades: " + producto.unidadAVender + " \n Precio: " + parcial);
             }
         });
     }
@@ -230,7 +195,7 @@ no sera incluido en la nueva lista*/
         for(let i=0;i<localStorage.length;i++){
             let clave = localStorage.key(i);
             let producto = JSON.parse(localStorage.getItem(clave));
-            nuevaLista.push("\n Producto: " + producto.elemento + " | Unidades: " + producto.unidadAVender + " | Precio: " + parcial);
+            nuevaLista.push("\n\n Producto: " + producto.elemento + "\n Unidades: " + producto.unidadAVender + " \n Precio: " + parcial);
         }
     }
     return nuevaLista;
@@ -303,6 +268,7 @@ function guardarCarritoSinComprar(lista){
 function mostrarCarritoSinComprar(){
 /*Trae todos los productos que hay almacenados en local storage*/
     let carritoSinComprar = JSON.parse(localStorage.getItem("carritoSinComprar"));
+    total = JSON.parse(localStorage.getItem("total"));
 
     return carrito.concat(carritoSinComprar);
 }
@@ -334,13 +300,23 @@ function restablecerStock(lista){
 /* ************************************************ ALERTAS ************************************************************************************ */
 
 function msjAgregarProducto(){
+/*Muestra un mensaje indicando al usuario que se agregó el producto al carrito*/
     Swal.fire({
         title: "Se agrego el producto al bolso",
         icon: "success"
       });
 }
 
-function msjBolsoSinProductos(){
+function msjQuitarProducto(){
+/*Muestra un mensaje indicando al usuario que se quitó el producto al carrito*/
+    Swal.fire({
+        title: "Se quito el producto del bolso",
+        icon: "success"
+      });
+}
+
+function msjCarritoSinProductos(){
+/*Muestra un mensaje indicando al usuario que el carrito no posee productos*/
     Swal.fire({
         icon: "error",
         title: "El bolso no posee productos",
@@ -348,6 +324,7 @@ function msjBolsoSinProductos(){
 }
 
 function msjConfirmarVaciarCarrito(lista){
+/*Muestra un mensaje consultando al usuario si desea vaciar el carrito. En caso de que confirme, se eliminaran todos los productos. Caso contrario, se mantendrán.*/
     Swal.fire({
         title: "Estas seguro que deseas vaciar el bolso?",
         text: "Esta acción no tiene vuelta atras",
@@ -370,11 +347,11 @@ function msjConfirmarVaciarCarrito(lista){
 }
 
 function mostrarListaEnVentana(lista){
+/*Muestra en una ventana la lista de productos que posee el carrito.*/
     let listaProductos = mostrarListaAlUSuario(lista);
     swal.fire({
         title:"Bolso de compras",
         html:`<pre>${listaProductos}\n\n Total: ${total}</pre>`,
-        icon:"info",
         width: 750,
         showCancelButton: true,
         cancelButtonColor: "#d33",
@@ -392,8 +369,8 @@ function mostrarListaEnVentana(lista){
     });
 }
 
-function ingresarCantidad(producto,lista){
-    
+function ingresarCantidadAAgregar(producto,lista){
+/*Se solicita al usuario la cantidad de productos que desea añadir al carrito. Se guarda la lista y el total en el localStorage para poder recuperarlo*/    
     Swal.fire({
         title: "Ingrese la cantidad de unidades que desea agregar:",
         input: "number",
@@ -406,30 +383,70 @@ function ingresarCantidad(producto,lista){
         confirmButtonText: "Agregar",
         cancelButtonText: "Cancelar",
       }).then((result) => {
-        if (result.isConfirmed) {
-            if(lista.includes(producto)){
-                producto.unidadAVender = result.value;
-                let unidadAVenderActual = producto.unidadAVender;
-                restarStock(producto);
-                total += producto.precio * producto.unidadAVender;
-                producto.unidadAVender += unidadAVenderActual;
-                localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
-            }
-            else{
-                producto.unidadAVender = result.value;
-                restarStock(producto);
-                total += producto.precio * producto.unidadAVender;
-                lista.push(producto);
-                localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+        if (result.isConfirmed && lista.includes(producto)) {
+            producto.unidadAVender = parseInt(result.value);
+            let unidadAVenderActual = producto.unidadAVender;
+            restarStock(producto);
+            total += producto.precio * producto.unidadAVender;
+            producto.unidadAVender += unidadAVenderActual;
+            localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+            localStorage.setItem("total",JSON.stringify(total));
+            msjAgregarProducto();
 
-            }
-          msjAgregarProducto();
+        }else if(!lista.includes(producto)){
+            producto.unidadAVender = result.value;
+            restarStock(producto);
+            total += producto.precio * producto.unidadAVender;
+            lista.push(producto);
+            localStorage.setItem("carritoSinComprar",JSON.stringify(producto));
+            localStorage.setItem("total",JSON.stringify(total));
+            msjAgregarProducto();
+
         }
         else{
             Swal.fire({
-                title: "No se agrego el producto al carrito",
+                title: "No se agrego el producto al bolso",
                 icon: "error",
             });
         }
+      });
+}
+
+
+function ingresarCantidadAQuitar(producto,lista){
+/*Se solicita al usuario la cantidad de productos que desea quitar al carrito y se actualiza la lista con las modificaciones. En caso de que el producto no se encuentre en la lista,
+se da aviso al usuario.*/ 
+    let cantidadEnCarrito = contarCantidadDeProductosEnLista(producto,lista);;
+
+    Swal.fire({
+        title: "Ingrese la cantidad de unidades que desea quitar:",
+        input: "number",
+        inputAttributes: {
+          min: 1,
+          max: cantidadEnCarrito,
+          step: 1,
+        },
+        showCancelButton: true,
+        confirmButtonText: "Quitar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed && lista.includes(producto)) {
+            nuevaLista = lista.filter(item => item.id != producto);
+            lista = nuevaLista;
+            let unidad = parseInt(result.value);
+
+            producto.unidadAVender -= unidad;
+            producto.stock += unidad;
+            modificarPrecioTotal(lista);
+            localStorage.setItem("total",JSON.stringify(total));
+            msjQuitarProducto();
+        }
+        else{
+            Swal.fire({
+                title: "El producto no se encuentra en el bolso",
+                icon: "error",
+            });
+        }
+        
       });
 }
