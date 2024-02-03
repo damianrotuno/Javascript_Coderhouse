@@ -85,6 +85,7 @@ setTimeout(() => {
     mostrarBotonesCarrito();
     setTimeout(() => {
         traerProductos();
+        getCarritoSinComprar(carrito);
     }, 300)
 },1200)
 
@@ -106,7 +107,7 @@ function verLista(lista){
 function verDetalleLista(lista){
 /*Muestra el detalle de la lista ingresada. Valida si hay productos en memoria para mostrarlo o muestra la lista de la sesion actual y luego la guarda en el local storage*/
     if(hayProductosEnMemoria() && estaVacia(lista)){
-        lista = mostrarCarritoSinComprar();
+        mostrarCarritoSinComprar();
         calcularParcialEnMemoria();
         mostrarListaEnVentana(lista);
 
@@ -142,24 +143,6 @@ function verificarStock(producto){
     }
 
     producto.unidadAVender = unidad;
-}
-
-function finalizarCompra(lista){
-/*Se valida que la lista no este vacia. Se muestra la lista, se muestra el total y se solicita confirmacion al usuario para proceder 
-con la compra. En caso de que el bolso de compras este vacio, se avisa al usuario.*/
-    if(hayProductosEnMemoria() && estaVacia(lista)){
-        nuevaLista = mostrarCarritoSinComprar();
-        verDetalleLista(nuevaLista);
-        calcularParcialEnMemoria();
-        total = parcial;
-    }
-    else if(!estaVacia(lista)){
-        verDetalleLista(lista);
-
-    }
-    else{
-        msjCarritoSinProductos();
-    }
 }
 
 function restarStock(producto){
@@ -201,36 +184,6 @@ no sera incluido en la nueva lista*/
     return nuevaLista;
 }
 
-function quitarProducto(lista,producto){
-//Quita el producto seleccionado por el usuario. Se añade al stock la cantidad ingresada por el usuario y se recalcula el precio total.
-
-    if(lista.includes(producto)){
-            
-        let productosEnlista = contarCantidadDeProductosEnLista(producto,lista);
-        let cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");
-        
-        while(isNaN(cantidad) || cantidad < 1 || cantidad > productosEnlista){
-            alert("ERROR. POR FAVOR, NO POSEE ESA CANTIDAD EN EL BOLSO");
-            cantidad = prompt("Ingrese la cantidad de unidades que desea agregar: ");    
-        }
-
-        unidad = parseInt(cantidad);
-
-        nuevaLista = lista.filter(item => item.id != producto);
-        lista = nuevaLista;
-
-        producto.unidadAVender -= unidad;
-        producto.stock += unidad;
-        
-        modificarPrecioTotal(lista);
-        alert("Se quito correctamente el producto");
-    }
-    else{
-        alert ("El producto no se encuentra en el bolso");
-    }
-
-}
-
 function modificarPrecioTotal(lista){
 //Verifica los productos de la lista y calcula el precio total.
     total = 0;
@@ -269,8 +222,14 @@ function mostrarCarritoSinComprar(){
 /*Trae todos los productos que hay almacenados en local storage*/
     let carritoSinComprar = JSON.parse(localStorage.getItem("carritoSinComprar"));
     total = JSON.parse(localStorage.getItem("total"));
+    return carritoSinComprar;
+}
 
-    return carrito.concat(carritoSinComprar);
+function getCarritoSinComprar(lista){
+    const carritoSinComprar = mostrarCarritoSinComprar();
+    carritoSinComprar.forEach((producto) => {
+        lista.push(producto);
+    });
 }
 
 function hayProductosEnMemoria(){
@@ -295,7 +254,6 @@ function calcularParcialEnMemoria(){
 function restablecerStock(lista){
     lista.forEach((el) => { el.stock += el.unidadAVender } );
 }
-
 
 /* ************************************************ ALERTAS ************************************************************************************ */
 
